@@ -1,0 +1,99 @@
+# ===============================
+# Android / Gradle
+# ===============================
+
+*.iml
+.gradle/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+
+# ===============================
+# Built application files
+# ===============================
+
+*.apk
+*.aar
+*.ap_
+*.aab
+*.dex
+*.class
+bin/
+gen/
+out/
+
+# ===============================
+# Android Studio / IntelliJ
+# ===============================
+
+.idea/
+*.idea/*
+**/.idea/*
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/dictionaries
+
+# ===============================
+# OS / Misc
+# ===============================
+
+.DS_Store
+*.log
+vcs.xml
+
+# ===============================
+# Keystore files
+# ===============================
+
+# Uncomment if you want to ignore keystore files
+# *.jks
+# *.keystore
+
+# ===============================
+# Google Services
+# ===============================
+
+# google-services.json
+
+# ===============================
+# Freeline
+# ===============================
+
+freeline.py
+freeline/
+freeline_project_description.json
+
+# ===============================
+# Fastlane
+# ===============================
+
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/readme.md
+
+# ===============================
+# Lint
+# ===============================
+
+lint/intermediates/
+lint/generated/
+lint/outputs/
+lint/tmp/
+# lint/reports/
+
+# ===============================
+# Optional / Release
+# ===============================
+
+# Uncomment if you don't want release build artifacts
+# release/
