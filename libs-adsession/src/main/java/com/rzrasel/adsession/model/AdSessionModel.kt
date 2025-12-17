@@ -14,6 +14,8 @@ data class AdSessionModel(
     var maxTime: Long = 0,
     @SerializedName("min_event_count")
     var minEventCount: Int = 0,
+    @SerializedName("max_event_count")
+    var maxEventCount: Int = 0,
     @SerializedName("total_event_count")
     var totalEventCount: Int = 0,
     @SerializedName("last_run_time")
@@ -54,6 +56,7 @@ data class AdSessionModel(
             minTime = loaded.minTime
             maxTime = loaded.maxTime
             minEventCount = loaded.minEventCount
+            maxEventCount = loaded.maxEventCount
             totalEventCount = loaded.totalEventCount
             lastRunTime = loaded.lastRunTime
             Log.d(TAG, "DEBUG_LOG Session loaded → $json")
@@ -83,7 +86,32 @@ data class AdSessionModel(
         return totalEventCount >= minEventCount
     }
 
-    fun logSession(tag: String = "DEBUG_LOG") {
+    fun isMaxEventCountReached(): Boolean {
+        return totalEventCount >= maxEventCount
+    }
+
+    fun logSession(customTag: String? = null) {
+        val tag = customTag ?: TAG
+
+        Log.d(
+            tag,
+            """
+        ── AdSessionModel State ──
+        Time:
+          minTime      = $minTime
+          maxTime      = $maxTime
+          lastRunTime  = $lastRunTime
+
+        Events:
+          minEvent     = $minEventCount
+          maxEvent     = $maxEventCount
+          totalEvents  = $totalEventCount
+        ─────────────────────────
+        """.trimIndent()
+        )
+    }
+
+    fun logSessionV1(tag: String = "DEBUG_LOG") {
         Log.d(
             tag, "DEBUG_LOG call from AdSessionModel: " +
                     "minTime=$minTime, maxTime=$maxTime, minEventCount=$minEventCount, " +

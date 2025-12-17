@@ -71,11 +71,18 @@ class AdSessionTrackerViewModel : ViewModel() {
         maxTime2: Long = (2 * 60 * 1000).toLong(),
         minEventCount1: Int = 8,
         minEventCount2: Int = 10,
+        maxEventCount1: Int = 12,
+        maxEventCount2: Int = 14,
     ) {
         adSessionManager.configureSession(
-            minTime1, minTime2,
-            maxTime1, maxTime2,
-            minEventCount1, minEventCount2
+            minTime1,
+            minTime2,
+            maxTime1,
+            maxTime2,
+            minEventCount1,
+            minEventCount2,
+            maxEventCount1,
+            maxEventCount2,
         )
         adSessionManager.initSession()
     }

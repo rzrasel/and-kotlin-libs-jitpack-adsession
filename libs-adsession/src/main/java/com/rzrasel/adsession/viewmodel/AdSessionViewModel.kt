@@ -49,7 +49,9 @@ class AdSessionViewModel : ViewModel() {
             maxTime1 = config.maxTime1,
             maxTime2 = config.maxTime2,
             minEventCount1 = config.minEventCount1,
-            minEventCount2 = config.minEventCount2
+            minEventCount2 = config.minEventCount2,
+            maxEventCount1 = config.maxEventCount1,
+            maxEventCount2 = config.maxEventCount2,
         )
 
         adSessionManager.initSession()

@@ -13,9 +13,12 @@ data class AdSessionConfigure(
     val maxTime2: Long,
     val minEventCount1: Int,
     val minEventCount2: Int,
+    val maxEventCount1: Int,
+    val maxEventCount2: Int,
     var minTime: Long = 0,
     var maxTime: Long = 0,
     var minEventCount: Int = 0,
+    var maxEventCount: Int = 0,
     var totalEventCount: Int = 0,
     var lastRunTime: Long = System.currentTimeMillis(),
 ) {
@@ -27,9 +30,10 @@ data class AdSessionConfigure(
     }
 
     init {
-        require(minTime1 <= minTime2) { "minTime1 must be <= minTime2" }
-        require(maxTime1 <= maxTime2) { "maxTime1 must be <= maxTime2" }
-        require(minEventCount1 <= minEventCount2) { "minEventCount1 must be <= minEventCount2" }
+        require(minTime1 < minTime2) { "minTime1 must be less than minTime2" }
+        require(maxTime1 < maxTime2) { "maxTime1 must be less than maxTime2" }
+        require(minEventCount1 < minEventCount2) { "minEventCount1 must be less than minEventCount2" }
+        require(maxEventCount1 < maxEventCount2) { "maxEventCount1 must be less than maxEventCount2" }
 
         resetSession()
     }
@@ -37,15 +41,18 @@ data class AdSessionConfigure(
     fun randomMinTime() = Random.nextLong(minTime1, minTime2 + 1)
     fun randomMaxTime() = Random.nextLong(maxTime1, maxTime2 + 1)
     fun randomMinEventCount() = Random.nextInt(minEventCount1, minEventCount2 + 1)
+    fun randomMaxEventCount() = Random.nextInt(maxEventCount1, maxEventCount2 + 1)
 
     fun recalc() {
         minTime = randomMinTime()
         maxTime = randomMaxTime()
         minEventCount = randomMinEventCount()
+        maxEventCount = randomMaxEventCount()
         sessionModel = sessionModel.copy(
             minTime = minTime,
             maxTime = maxTime,
             minEventCount = minEventCount,
+            maxEventCount = maxEventCount,
             totalEventCount = totalEventCount,
             lastRunTime = lastRunTime
         )
@@ -82,6 +89,10 @@ data class AdSessionConfigure(
         return sessionModel.totalEventCount >= sessionModel.minEventCount
     }
 
+    fun isMaxEventCountReached(): Boolean {
+        return sessionModel.totalEventCount >= sessionModel.maxEventCount
+    }
+
     fun toJson(): String = Json.encodeToString(this)
 
     fun loadPreferencesJson(): String {
@@ -97,6 +108,7 @@ data class AdSessionConfigure(
             minTime = data.minTime
             maxTime = data.maxTime
             minEventCount = data.minEventCount
+            maxEventCount = data.maxEventCount
             totalEventCount = data.totalEventCount
             lastRunTime = data.lastRunTime
         }
@@ -104,6 +116,31 @@ data class AdSessionConfigure(
     }
 
     fun logConfigState(customTag: String? = null) {
+        val tag = customTag ?: TAG
+
+        Log.d(
+            tag,
+            """
+        ── AdSessionConfigure State ──
+        Range:
+          minTime   : [$minTime1 .. $minTime2]
+          maxTime   : [$maxTime1 .. $maxTime2]
+          minEvent  : [$minEventCount1 .. $minEventCount2]
+          maxEvent  : [$maxEventCount1 .. $maxEventCount2]
+
+        Current:
+          minTime        = $minTime
+          maxTime        = $maxTime
+          minEventCount  = $minEventCount
+          maxEventCount  = $maxEventCount
+          totalEvents    = $totalEventCount
+          lastRunTime    = $lastRunTime
+        ────────────────────────────
+        """.trimIndent()
+        )
+    }
+
+    fun logConfigStateV1(customTag: String? = null) {
         Log.d(
             TAG,
             "DEBUG_LOG AdSession State → " +

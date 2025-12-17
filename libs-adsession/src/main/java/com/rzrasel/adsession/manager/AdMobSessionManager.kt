@@ -12,6 +12,8 @@ class AdMobSessionManager() {
         maxTime2 = 0L,
         minEventCount1 = 0,
         minEventCount2 = 0,
+        maxEventCount1 = 0,
+        maxEventCount2 = 0,
     )
 
     // Default session config
@@ -19,8 +21,10 @@ class AdMobSessionManager() {
     private var minTime2: Long = 3 * 60 * 1000L
     private var maxTime1: Long = 5 * 60 * 1000L
     private var maxTime2: Long = 7 * 60 * 1000L
-    private var minEventCount1: Int = 10
-    private var minEventCount2: Int = 14
+    private var minEventCount1: Int = 8
+    private var minEventCount2: Int = 10
+    private var maxEventCount1: Int = 12
+    private var maxEventCount2: Int = 14
     private var totalEventCount: Int = 0
     var lastRunTime: Long = System.currentTimeMillis()
 
@@ -40,6 +44,8 @@ class AdMobSessionManager() {
         maxTime2: Long,
         minEventCount1: Int,
         minEventCount2: Int,
+        maxEventCount1: Int,
+        maxEventCount2: Int,
         totalEventCount: Int = 0,
         lastRunTime: Long = System.currentTimeMillis(),
     ) {
@@ -61,6 +67,8 @@ class AdMobSessionManager() {
             maxTime2 = maxTime2,
             minEventCount1 = minEventCount1,
             minEventCount2 = minEventCount2,
+            maxEventCount1 = maxEventCount1,
+            maxEventCount2 = maxEventCount2,
             minTime = sessionConfigure.randomMinTime(),
             maxTime = sessionConfigure.randomMaxTime(),
             minEventCount = sessionConfigure.randomMinEventCount(),
@@ -84,6 +92,8 @@ class AdMobSessionManager() {
                 maxTime2 = this.maxTime2,
                 minEventCount1 = this.minEventCount1,
                 minEventCount2 = this.minEventCount2,
+                maxEventCount1 = this.maxEventCount1,
+                maxEventCount2 = this.maxEventCount2,
                 totalEventCount = this.totalEventCount,
                 lastRunTime = this.lastRunTime,
             )
@@ -129,6 +139,7 @@ class AdMobSessionManager() {
         val minTimePassed = sessionConfigure.isMinTimePassed(now)
         val maxTimePassed = sessionConfigure.isMaxTimePassed(now)
         val minEventReached = sessionConfigure.isMinEventCountReached()
+        val maxEventReached = sessionConfigure.isMaxEventCountReached()
 
         Log.d(
             TAG,
@@ -142,7 +153,14 @@ class AdMobSessionManager() {
             return
         }
 
-        // Case 2: Minimum time + minimum events
+        // Case 2: Max time ALWAYS forces ad
+        if (maxEventReached) {
+            Log.d("DEBUG_LOG", "DEBUG_LOG processEventTrigger maxEventReached")
+            runAdAndReset(adSessionConfigure)
+            return
+        }
+
+        // Case 3: Minimum time + minimum events
         if (minTimePassed && minEventReached) {
             Log.d("DEBUG_LOG", "DEBUG_LOG processEventTrigger minTimePassed && minEventReached")
             runAdAndReset(adSessionConfigure)

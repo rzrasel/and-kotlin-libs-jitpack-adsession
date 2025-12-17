@@ -7,4 +7,6 @@ data class AdSessionConfigModel(
     val maxTime2: Long,
     val minEventCount1: Int,
     val minEventCount2: Int,
+    val maxEventCount1: Int,
+    val maxEventCount2: Int,
 )
