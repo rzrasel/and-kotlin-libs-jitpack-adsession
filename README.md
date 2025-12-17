@@ -110,6 +110,6 @@ git push --force
 echo date("D", (time() + 6 * 60 * 60)) . "day " . date("F j, Y, G:i:s", (time() + 6 * 60 * 60));
 ```
 
-➕❌
+✔➕❌
 
 [Learn Git Squash in 3 minutes // explained with live animations!](https://youtu.be/V5KrD7CmO4o)
