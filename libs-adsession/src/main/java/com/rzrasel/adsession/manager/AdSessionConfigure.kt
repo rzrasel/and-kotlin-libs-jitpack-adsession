@@ -30,10 +30,10 @@ data class AdSessionConfigure(
     }
 
     init {
-        require(minTime1 < minTime2) { "minTime1 must be less than minTime2" }
-        require(maxTime1 < maxTime2) { "maxTime1 must be less than maxTime2" }
-        require(minEventCount1 < minEventCount2) { "minEventCount1 must be less than minEventCount2" }
-        require(maxEventCount1 < maxEventCount2) { "maxEventCount1 must be less than maxEventCount2" }
+        require(minTime1 <= minTime2) { "minTime1 must be less than minTime2" }
+        require(maxTime1 <= maxTime2) { "maxTime1 must be less than maxTime2" }
+        require(minEventCount1 <= minEventCount2) { "minEventCount1 must be less than minEventCount2" }
+        require(maxEventCount1 <= maxEventCount2) { "maxEventCount1 must be less than maxEventCount2" }
 
         resetSession()
     }
